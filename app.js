@@ -4,12 +4,13 @@ const mongoose = require("mongoose");
 // const cors = require("cors");
 
 const carRoutes = require("./routes/cars.routes");
-
+const userRoutes = require("./routes/users.routes");
 const app = express();
 
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(carRoutes);
+app.use(userRoutes);
 
 mongoose
   .connect("mongodb://localhost:27017/reactProject", {
