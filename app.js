@@ -5,12 +5,15 @@ const mongoose = require("mongoose");
 
 const carRoutes = require("./routes/cars.routes");
 const userRoutes = require("./routes/users.routes");
+const commentRoutes = require('./routes/comments.routes');
+
 const app = express();
 
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(carRoutes);
 app.use(userRoutes);
+app.use(commentRoutes);
 
 mongoose
   .connect("mongodb://localhost:27017/reactProject", {

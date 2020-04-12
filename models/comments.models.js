@@ -8,9 +8,9 @@ const commentSchema = new Schema({
         required: true
     },
     createdAt: {
-        type: Date,
+        type: String,
         required: true
     }
-});
+  });
 
 module.exports = mongoose.model('Comment', commentSchema);

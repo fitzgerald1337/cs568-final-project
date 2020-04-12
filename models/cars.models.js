@@ -25,7 +25,13 @@ const carSchema = new Schema({
   image: {
     type: String,
     required: true,
-  }
+  },
+  comments: [
+    {userId : { type: Schema.Types.ObjectId, ref: "User"},
+    comment : [
+     { CommentId : { type: Schema.Types.ObjectId, ref: "Comment"}}
+    ]
+  }],
 });
 
 module.exports = mongoose.model("Car", carSchema);
