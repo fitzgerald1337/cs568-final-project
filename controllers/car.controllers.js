@@ -17,8 +17,8 @@ exports.getCars = (req, res, next) => {
         .catch(err => console.log(err));
 };
 exports.getCar = (req, res, next) => {
+    console.log(here);
     const carId = req.params.Cid;
-    console.log(carId);
     Car.findById(carId)
        .then(result => {
            res.send(result);
