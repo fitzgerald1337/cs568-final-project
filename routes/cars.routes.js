@@ -4,5 +4,10 @@ const route = express.Router();
 
 route.post("/car", CarController.addCar);
 route.get("/car/:Cid", CarController.getCar);
+route.get('/car', CarController.getAllCars);
+
+route.post("/user", CarController.signUp);
+
+
 
 module.exports = route;
