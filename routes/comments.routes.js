@@ -7,6 +7,4 @@ route.get("/comment/:CommId", CommentController.getComment);
 route.get("/comment", CommentController.getAllComments);
 
 
-
-
 module.exports = route;
