@@ -2,6 +2,7 @@ const Car = require('../models/cars.models');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+
 exports.addCar = (req, res, next) => {
     Car.create(req.body)
         .then(response => res.json(response))
