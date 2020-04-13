@@ -23,6 +23,10 @@ const carSchema = new Schema({
     required: true,
   },
   image: String,
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Comment',
+  }]
 });
 
 module.exports = mongoose.model("Car", carSchema);

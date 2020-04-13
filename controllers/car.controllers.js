@@ -18,8 +18,8 @@ exports.getCars = (req, res, next) => {
 };
 exports.getCar = (req, res, next) => {
     console.log(here);
-    const carId = req.params.Cid;
-    Car.findById(carId)
+    const {Cid} = req.params;
+    Car.findById(Cid)
        .then(result => {
            res.send(result);
        })

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const CarController = require("../controllers/car.controllers");
 const route = express.Router();
 
-route.get("/car:Cid", CarController.getCar);
+route.get("/car/:Cid", CarController.getCar);
 route.post("/car", CarController.addCar);
 
 route.get("/cars", CarController.getCars);
