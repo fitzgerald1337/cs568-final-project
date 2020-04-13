@@ -11,27 +11,27 @@ const carSchema = new Schema({
     required: true,
   },
   price: {
-    type: String,
+    type: Number,
     required: true,
   },
   year: {
-    type: Number,
+    type: Date,
     required: true,
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
   },
   image: {
     type: String,
-    required: true,
+    // required: true,
   },
-  comments: [
-    {userId : { type: Schema.Types.ObjectId, ref: "User"},
-    comment : [
-     { CommentId : { type: Schema.Types.ObjectId, ref: "Comment"}}
-    ]
-  }],
+  listOfComments: [
+    {
+      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      comment: [{ CommentId: { type: Schema.Types.ObjectId, ref: "Comment" } }],
+    },
+  ],
 });
 
 module.exports = mongoose.model("Car", carSchema);

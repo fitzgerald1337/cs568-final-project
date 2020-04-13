@@ -4,7 +4,8 @@ const route = express.Router();
 
 
 
-route.post("/user", userController.signUp);
+// route.post("/user", userController.signUp);
+route.get("/user", userController.commentByUser)
 
 
 module.exports = route;
