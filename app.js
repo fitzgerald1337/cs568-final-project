@@ -4,7 +4,8 @@ const passport = require('passport');
 const mongoose = require("mongoose");
 // const cors = require("cors");
 
-const UserModel = require('./models/users.models');
+const UserModel = require('./models/users.models'); 
+
 const loginRoutes = require("./routes/login.routes");
 const userRoute = require('./routes/cars.routes');
 const commentRoute = require('./routes/comments.routes');

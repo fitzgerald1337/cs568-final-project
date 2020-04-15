@@ -1,101 +1,95 @@
-// const Comment = require("../models/comments.models");
+const Comment = require("../models/comments.models");
 const User = require("../models/users.models");
 const Car = require("../models/cars.models");
-const Mongoose=require('mongoose')
+// const Mongoose=require('mongoose')
 
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 
-// exports.getComment = (req, res, next) => {
-//   console.log(req.params.CommId)
-//   Car.findById(req.params.CommId)
-//     .then((response) => res.json(response))
-//     .catch((err) => console.log(err));
-// };
-
-exports.getCommentByUserId = (req, res, next) => {
-  // console.log(req.params.uid)
-  Car.find({'comments._id' :req.params.uid})
-      .then((response) => res.json(response))
-      .catch((err) => console.log(err));
+exports.addComment = (req, res, next) => {
+    const content = {content : req.body.content}
+    new Comment(content).save().then((comm) => {
+    
+      Car.findById(req.body.carId).then((car) => {
+        console.log(car);
+        const index = car.comments.findIndex(commentobj => commentobj.writer == req.body.writer);
+        
+        if (index < 0) {
+          //new comment for a specific user
+          let tempCommentArray = [];
+          tempCommentArray.push({ commentId: comm._id });
+          car.comments.push({
+            writer: req.body.writer,
+            comment: tempCommentArray,
+          });
+          car.save(); //save product
+        } else {
+          //if the user already have a comment && allows to handle multiple comment
+          let userComment = car.comments[index];
+          userComment.comment = userComment.comment.push({commentId: comm._id});
+          car.comments[index] = userComment;
+          Car.updateOne(
+            { _id: req.body.carId },
+            { $set: { comments: car.comments } }
+          )
+          .then((carsaved) => res.json(carsaved))
+          // .catch((err) => res.json(err));
+        }
+      });
+      res.json(comm);
+    });
+  };
+  
+  
+  exports.getAllComments = (req, res, next) => {
+    Car.findById(req.params.carId).then((car) => {
+     
+      let arr = car.comments.map((carr) => {
+        
+        let cids = carr.comment.map((c) => c.commentId);
+        
+        return cids;
+      });
+      let retuArr =  [];
+      arr.forEach(ar=>{
+         ar.forEach(cid=>retuArr.push(cid));
+      
+      })
+  
+          Comment.find({_id: {$in: retuArr}}).then(ret=>{
+           let commARR =  ret.map(comm => comm.content);
+            res.json(commARR)
+          }
+             );
+    });
   };
 
-exports.getAllComments = (req, res, next) => {
-  Comment.find()
-    .then((response) => res.json(response))
-    .catch((err) => console.log(err));
-};
+// exports.addComment = (req, res, next) => {
+// Car.findById(req.params.carId).then((car) => {
+//         // console.dir(car)
+//         const index = car.comments.findIndex(obj=>obj._id == req.params.uid);
 
-exports.addComment = (req, res, next) => {
-Car.findById(req.params.carId).then((car) => {
-        console.dir(car)
-        const index = car.comments.findIndex(obj=>obj._id == req.params.uid);
-
-        if(index>=0){
-            console.log(req.body.content)
-            car.comments[index].contents.push(req.body.content);
-            car.save();
-            res.json(car);
-        }
-        else {
+//         if(index>=0){
+//             console.log(req.body.content)
+//             car.comments[index].contents.push(req.body.content);
+//             car.save();
+//             res.json(car);
+//         }
+//         else {
            
-            const comment={
-                _id:req.params.uid,contents:[req.body.content]
-            }
-            console.log(comment)
-            car.comments.push(comment)
-            car.save();
-            res.json(car)
+//             const comment={
+//                 _id:req.params.uid,contents:[req.body.content]
+//             }
+//             console.log(comment)
+//             car.comments.push(comment)
+//             car.save();
+//             res.json(car)
            
-        }
-    });
-};
-
-
-
-//   console.log(req.body.carId)
-//   const userIdIndex = car.listOfComments.findIndex(obj=>obj.userId == req.body.uid);
-
-//   if(userIdIndex < 0){    //add new comment
-// let commentArray = [];
-//     commentArray.push({ commentId: cmt._id});
-//     car.listOfComments.push({
-//       userId: req.body.uid,
-//       comment: commentArray
+//         }
 //     });
-//     car.save();  //save product
-//   }else{        //to have multiple comment
-//     let userComment = car.listOfComments[userIdIndex];
-//     userComment.comment = userComment.comment.push({ commentId: cmt._id});
-//     car.listOfComments[userIdIndex] = userComment;
-// console.log(prd.comments);
-// prd.update({_id: req.body.pid},{ $set: { comments: prd.comments } }).then(p=>res.json(p));                  //save product
-
-//   })
-//  res.json(cmt)
-// }
-
-// exports.addCar = async (req, res, next) => {
-//     console.log(req.body)
-//     // console.log(req.params._id)
-//     user = req.params;
-//     id = user.id;
-//     const {make, model, price, year} = req.body;
-//     const comment = await Car.create({make, model, price, year, user:id})
-//         .then(response => res.json(response))
-//         .catch(err => console.log(err));
-
-//     const userById = await User.findById(id)
-//     userById.listOfComments.push(comment)
-//     await userById.save();
-
-//     return res.send(userById);
 // };
 
-// exports.userByComments = async (req, res, next) => {
 
-//     const { id } = req.params;
-//     const userByComments = await Car.findById(id).populate('user')
-//     res.send(userByComments)
-// }
+
+
