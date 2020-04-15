@@ -1,34 +1,17 @@
 const Car = require('../models/cars.models');
-const User = require('../models/users.models')
+const Mongoose=require('mongoose')
+// const User = require('../models/users.models')
 
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 
 exports.addCar = async (req, res, next) => {
-    console.log(req.body)
-    // console.log(req.params._id)
-    user = req.params;
-    id = user.id;
-    const {make, model, price, year} = req.body;
-    const comment = await Car.create({make, model, price, year, user:id})
-        .then(response => res.json(response))
-        .catch(err => console.log(err));
-
+    // console.log(req.body)
     const userById = await User.findById(id)
-    userById.listOfComments.push(comment)
     await userById.save();
-
     return res.send(userById);
 };
-
-exports.userByComments = async (req, res, next) => {
-
-    const { id } = req.params;
-    const userByComments = await Car.findById(id).populate('user')
-    res.send(userByComments)
-}
-
 
 exports.getCars = (req, res, next) => {
      // Car.findById(req.params.Cid)
@@ -44,7 +27,16 @@ exports.getCar = (req, res, next) => {
        .catch(err => console.log(err));
 };
 
-
+exports.getCarByUserId = (req, res, next) => {
+  
+  const uid=Mongoose.Types.ObjectId(req.params.userId)
+//   console.log(uid,req.params.userId)
+    Car.find({'comments.writer' : uid})
+    .then(cars => {
+        res.json(cars)
+        
+    })
+}
 
 
 

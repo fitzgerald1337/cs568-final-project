@@ -15,7 +15,7 @@ const carSchema = new Schema({
     required: true,
   },
   year: {
-    type: Date,
+    type: Number,
     required: true,
   },
   description: {
@@ -26,10 +26,17 @@ const carSchema = new Schema({
     type: String,
     // required: true,
   },
-  listOfComments: [
+  comments: [
     {
-      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-      comment: [{ CommentId: { type: Schema.Types.ObjectId, ref: "Comment" } }],
+      _id: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      contents: [
+        {
+          type: String,
+        },
+      ],
+    },
+    {
+      timestamps: true, //This will automatically add createdAt and updatedAt fields to commentSchema.
     },
   ],
 });
