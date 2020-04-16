@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require('passport');
 const mongoose = require("mongoose");
-// const cors = require("cors");
+const cors = require("cors");
 
 const UserModel = require('./models/users.models');
 const loginRoutes = require("./routes/login.routes");
@@ -13,7 +13,7 @@ const app = express();
 
 
 
-// app.use(cors());
+app.use(cors());
 app.use(bodyParser.json());
 
 
