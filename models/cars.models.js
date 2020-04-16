@@ -11,11 +11,11 @@ const carSchema = new Schema({
     required: true,
   },
   price: {
-    type: Number,
+    type: String,
     required: true,
   },
   year: {
-    type: Number,
+    type: String,
     required: true,
   },
   description: {
