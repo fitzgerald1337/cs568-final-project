@@ -26,19 +26,19 @@ const carSchema = new Schema({
     type: String,
     // required: true,
   },
-  comments: [
-    {
-      _id: { type: Schema.Types.ObjectId, ref: "User", required: true },
-      contents: [
-        {
-          type: String,
-        },
-      ],
-    },
-    {
-      timestamps: true, //This will automatically add createdAt and updatedAt fields to commentSchema.
-    },
-  ],
+  comments : [
+      {
+          writer : {
+            type: Schema.Types.ObjectId, ref: "User", required: true 
+          },
+          comment : [{
+              commentId : {
+                type: Schema.Types.ObjectId, ref: "Comment", required: true 
+              }
+          }]
+      }
+  ]
 });
 
 module.exports = mongoose.model("Car", carSchema);
+
